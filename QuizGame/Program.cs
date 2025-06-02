@@ -7,14 +7,17 @@ using System.Linq;
 
 namespace QuizGameApp
 {
-    // Abstrakt basklass
+    // Abstrakt basklass för alla quizfrågor
     public abstract class QuizQuestion
     {
-        public string Question { get; set; }
-        public string[] Choices { get; set; }
+        public string? Question { get; set; }
+        public string[]? Choices { get; set; }
         public int CorrectAnswer { get; set; }
 
+        // Abstrakt metod som varje frågetyp måste implementera för att kontrollera svaret
         public abstract bool CheckAnswer(int answer);
+
+        // Visar frågan och svarsalternativ i färg
         public virtual void DisplayQuestion()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -50,7 +53,7 @@ namespace QuizGameApp
         }
     }
 
-    // Quizspelhanterare
+    // Quizspelhanterare (logik, frågor, poäng och kommunikation)
     public class QuizGame
     {
         private List<QuizQuestion> questions;
@@ -61,6 +64,7 @@ namespace QuizGameApp
         private int correctAnswers = 0;
         private int wrongAnswers = 0;
 
+        // Initierar spel med standardfrågor och spelarens namn
         public QuizGame(WebSocket socket, string name)
         {
             ws = socket;
@@ -240,20 +244,70 @@ namespace QuizGameApp
                 Console.ResetColor();
             }
         }
+
+        public static void ShowMainMenu()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("=== Välkommen till Quiz-spelet ===");
+            Console.ResetColor();
+            Console.WriteLine("1. Starta nytt spel");
+            Console.WriteLine("2. Visa leaderboard");
+            Console.WriteLine("3. Avsluta");
+            Console.Write("Välj ett alternativ: ");
+        }
     }
 
     public class Program
     {
+        public static void ShowMainMenu()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("=== Välkommen till Quiz-spelet ===");
+            Console.ResetColor();
+            Console.WriteLine("1. Starta nytt spel");
+            Console.WriteLine("2. Visa leaderboard");
+            Console.WriteLine("3. Avsluta");
+            Console.Write("Välj ett alternativ: ");
+        }
+
         public static void Main(string[] args)
         {
-            Console.Write("Ange ditt namn: ");
-            string name = Console.ReadLine() ?? "Spelare";
+            while (true)
+            {
+                ShowMainMenu();
+                var choice = Console.ReadLine();
+                if (choice == "1")
+                {
+                    Console.Write("Ange ditt namn: ");
+                    string name = Console.ReadLine() ?? "Spelare";
 
-            using var ws = new WebSocketSharp.WebSocket("ws://localhost:8080");
-            ws.Connect();
+                    using var ws = new WebSocketSharp.WebSocket("ws://localhost:8080");
+                    ws.Connect();
 
-            var game = new QuizGame(ws, name);
-            game.Start();
+                    var game = new QuizGame(ws, name);
+                    game.Start();
+                }
+                else if (choice == "2")
+                {
+                    Console.Clear();
+                    var dummyGame = new QuizGame(null, "");
+                    dummyGame.ShowHighscore();
+                    Console.WriteLine("Tryck på valfri tangent för att återgå till menyn...");
+                    Console.ReadKey();
+                }
+                else if (choice == "3")
+                {
+                    Console.WriteLine("Avslutar...");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt val, försök igen!");
+                    Thread.Sleep(1000);
+                }
+            }
         }
     }
 }

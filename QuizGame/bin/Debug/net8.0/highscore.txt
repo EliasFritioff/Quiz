@@ -2,3 +2,10 @@ Elias;19
 hej;20
 Hejdå;20
 Hejdå;16
+Hugo;12
+David;21
+1st;22
+Slow;18
+lll;19
+kungen;17
+Hej;17
