@@ -15,3 +15,4 @@ C:\Users\elias.fritioff\Quiz\QuizGame\obj\Debug\net8.0\ref\QuizGame.dll
 C:\Users\elias.fritioff\Quiz\QuizGame\bin\Debug\net8.0\websocket-sharp.dll
 C:\Users\elias.fritioff\Quiz\QuizGame\obj\Debug\net8.0\QuizGame.csproj.AssemblyReference.cache
 C:\Users\elias.fritioff\Quiz\QuizGame\obj\Debug\net8.0\QuizGame.csproj.Up2Date
+C:\Users\elias.fritioff\Quiz\QuizGame\obj\Debug\net8.0\QuizGame.sourcelink.json
